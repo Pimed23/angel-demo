@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import DataLabels from './DataLabels';
-import monitor from '.././monitor.js';
+import ActionButton from './ActionButton';
+import DataLabel from './DataLabel';
+import monitor from '../monitor.js';
 
 const Form = () => {
     const [manager, setManager] = useState('');
     const [patient, setPatient] = useState('');
+    const [deviceAddress, setDeviceAddress] = useState('');
 
     useEffect(() => {
         async function getManager() {
@@ -18,18 +20,31 @@ const Form = () => {
             setPatient(patient);    
         }
         getPatient();
+    
     }, []);
     
     return (
         <form>
-            <div className='row'>
-                <DataLabels
+            <div className = 'row'>
+                <DataLabel
                     title = 'Medic center ID'
                     data = {manager}
                 />
-                <DataLabels
+                <DataLabel
                     title = 'Patient ID'
                     data = {patient}
+                />
+
+                <label>Link IoT Device</label>
+                <input 
+                    className='messages u-full-width' type = 'text' 
+                    placeholder='Enter IoT address' value={deviceAddress}
+                    onChange={event => setDeviceAddress(event.target.value)}
+                />
+
+                <ActionButton
+                    title = 'Click to connect'
+                    params = {[deviceAddress, patient]}
                 />
             </div>
         </form>

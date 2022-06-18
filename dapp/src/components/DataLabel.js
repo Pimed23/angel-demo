@@ -1,15 +1,15 @@
 import React, {Fragment} from 'react';
 
-const DataLabels = (props) => {
+const DataLabel = (props) => {
 
     const {title, data} = props;
 
     return (
         <Fragment>
             <label>{title}</label>
-            <p className='mensajes' type='text' readOnly>{data}</p>
+            <p className='messages' type='text' readOnly>{data}</p>
         </Fragment>
-    )
+    );
 }
 
-export default DataLabels;
+export default DataLabel;

@@ -25,12 +25,12 @@ h1 {
   height: 80vh;
 }
 
-form, .mensajes {
+form, .messages {
   padding: 2rem;
   max-width: 600px;
   margin: 0 auto;
 }
-.mensajes {
+.messages {
   text-align: center;
 }
 .resultado {
@@ -58,4 +58,8 @@ input[type="submit"]:disabled{
 }
 .resultado p {
   margin: 0;
+}
+
+.center-text {
+  text-align: center;
 }
