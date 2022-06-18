@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import ActionButton from './ActionButton';
 import DataLabel from './DataLabel';
 import monitor from '../monitor.js';
+import web3 from '../web3.js';
 
 const Form = () => {
     const [manager, setManager] = useState('');
@@ -24,13 +25,21 @@ const Form = () => {
         getPatient();    
     }, []);
 
-    const getDevice = async(patient) => {
+    const getDevice = async (patient) => {
         try {
             const device = await monitor.methods.equipment_to_person(patient).call();
             setDevice(device);    
         } catch(err) {
             console.log('Dont found the device data');
         }
+    }
+
+    const connectIoTDevice = async(event, params) => {
+        event.preventDefault();
+        const accounts = await web3.eth.getAccounts();
+        await monitor.methods.addEquipment(params[0], params[1]).send({
+            from: accounts[0]
+        });
     }
     
     return (
@@ -59,6 +68,7 @@ const Form = () => {
 
                 <ActionButton
                     title = 'Click to connect'
+                    action = {connectIoTDevice}
                     params = {[deviceAddress, patient]}
                 />
             </div>
