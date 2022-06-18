@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Form from './components/Form.js';
 
 function App() {
-  return (
-      <div className='container'>
-        <Form/>
-      </div>
-  );
+    return (
+        <Fragment>
+            <div className='container'>
+                <Form/>
+            </div>
+        </Fragment>
+    );
 }
 
 export default App;

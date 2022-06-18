@@ -4,6 +4,7 @@ import monitor from '.././monitor.js';
 
 const Form = () => {
     const [manager, setManager] = useState('');
+    const [patient, setPatient] = useState('');
 
     useEffect(() => {
         async function getManager() {
@@ -11,14 +12,24 @@ const Form = () => {
             setManager(manager);    
         }
         getManager();
+
+        async function getPatient() {
+            const patient = await monitor.methods.patient().call();
+            setPatient(patient);    
+        }
+        getPatient();
     }, []);
     
     return (
         <form>
             <div className='row'>
                 <DataLabels
-                    title = 'Cotizador de precios'
+                    title = 'Medic center ID'
                     data = {manager}
+                />
+                <DataLabels
+                    title = 'Patient ID'
+                    data = {patient}
                 />
             </div>
         </form>
