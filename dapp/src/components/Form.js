@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import DataLabels from './DataLabels';
+import monitor from '.././monitor.js';
 
 const Form = () => {
-    const [data, setData] = useState('');
+    const [manager, setManager] = useState('');
 
     useEffect(() => {
-        setData('Hola');    
+        async function getManager() {
+            const manager = await monitor.methods.manager().call();
+            setManager(manager);    
+        }
+        getManager();
     }, []);
     
     return (
@@ -13,7 +18,7 @@ const Form = () => {
             <div className='row'>
                 <DataLabels
                     title = 'Cotizador de precios'
-                    data = {data}
+                    data = {manager}
                 />
             </div>
         </form>
