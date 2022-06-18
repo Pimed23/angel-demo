@@ -10,13 +10,13 @@ const Form = () => {
     const [deviceAddress, setDeviceAddress] = useState('');
 
     useEffect(() => {
-        async function getManager() {
+        const getManager = async () => {
             const manager = await monitor.methods.manager().call();
             setManager(manager);    
         }
         getManager();
 
-        async function getPatient() {
+        const getPatient = async () => {
             const patient = await monitor.methods.patient().call();
             setPatient(patient);
             getDevice(patient);
@@ -24,7 +24,7 @@ const Form = () => {
         getPatient();    
     }, []);
 
-    async function getDevice(patient) {
+    const getDevice = async(patient) => {
         try {
             const device = await monitor.methods.equipment_to_person(patient).call();
             setDevice(device);    
