@@ -6,6 +6,7 @@ import monitor from '../monitor.js';
 const Form = () => {
     const [manager, setManager] = useState('');
     const [patient, setPatient] = useState('');
+    const [device, setDevice] = useState('');
     const [deviceAddress, setDeviceAddress] = useState('');
 
     useEffect(() => {
@@ -17,22 +18,36 @@ const Form = () => {
 
         async function getPatient() {
             const patient = await monitor.methods.patient().call();
-            setPatient(patient);    
+            setPatient(patient);
+            getDevice(patient);
         }
-        getPatient();
-    
+        getPatient();    
     }, []);
+
+    async function getDevice(patient) {
+        try {
+            const device = await monitor.methods.equipment_to_person(patient).call();
+            setDevice(device);    
+        } catch(err) {
+            console.log('Dont found the device data');
+        }
+    }
     
     return (
         <form>
             <div className = 'row'>
                 <DataLabel
                     title = 'Medic center ID'
-                    data = {manager}
+                    data = {!!manager ? manager : '---'}
                 />
                 <DataLabel
                     title = 'Patient ID'
-                    data = {patient}
+                    data = {!!patient ? patient : '---'}
+                />
+
+                <DataLabel
+                    title = 'IoT Device ID'
+                    data = {!!device ? device : '---'}
                 />
 
                 <label>Link IoT Device</label>

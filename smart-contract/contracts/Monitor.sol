@@ -20,17 +20,16 @@ contract Monitor {
     }
 
     function addEquipment(address equipment, address person) public {
-        equipment_to_person[equipment] = person;
+        equipment_to_person[person] = equipment;
     }
-    
-    function createMeasure(uint start, uint end, address equipment, address target, bool is_normal ) public {
+        
+    function createMeasure(uint start, uint end, address person, address target, bool is_normal ) public {
         require(end-start > 50);
-        require(equipment_to_person[equipment] == target);
 
         Measure memory newMeasure = Measure({
         start_timestamp : start,
         end_timestamp : end,
-        equipment_address : equipment,
+        equipment_address : equipment_to_person[person],
         monitored_person : target,
         is_normal : is_normal
         });
