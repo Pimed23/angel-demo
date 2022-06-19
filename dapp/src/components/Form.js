@@ -3,8 +3,12 @@ import ActionButton from './ActionButton';
 import DataLabel from './DataLabel';
 import monitor from '../monitor.js';
 import web3 from '../web3.js';
+import {Storage} from 'aws-amplify';
+
 
 const Form = () => {
+    const [fileData, setFileData] = useState();
+    const [fileStatus, setFileStatus] = useState(false);
     const [accountAddress, setAccountAddress] = useState('');
     const [manager, setManager] = useState('');
     const [patient, setPatient] = useState('');
@@ -72,6 +76,12 @@ const Form = () => {
     const disconnectMetamask = async (event) => {
         window.ethereum.on('disconnect', setAccountAddress('0x0'));
     }
+
+    const uploadFile = async (event) => {
+        event.preventDefault();
+        await Storage.put(fileData.name, fileData, {contentType: fileData.type});
+        setFileStatus(true);
+    }
     
     return (
         <form>
@@ -107,6 +117,14 @@ const Form = () => {
                     action = {connectIoTDevice}
                     params = {[deviceAddress, patient]}
                 />
+
+                <center>
+                    <label>Upload file to the Cloud</label>
+                    <input type='file' onChange={(e) => setFileData(e.target.files[0])}/>
+                    <button onClick={uploadFile}>Upload File</button>                    
+                    <div>{fileStatus ? 'File upload successfully' : ''}</div>
+                </center>
+                
             </div>
         </form>
     )
