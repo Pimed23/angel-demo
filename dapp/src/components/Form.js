@@ -82,6 +82,7 @@ const Form = () => {
 
     const uploadFile = async (event) => {
         event.preventDefault();
+        console.log(cloudFile.name);
         await Storage.put(cloudFile.name, cloudFile, {contentType: cloudFile.type});
         setFileStatus(true);
         handleFileShow();
@@ -95,7 +96,13 @@ const Form = () => {
             });
         });
     }
-    
+
+    useEffect(() => {
+        setInterval(async () => {
+            handleFileShow();
+        }, 1000);
+    }, []);
+
     return (
         <form>
             <div className = 'row'>
