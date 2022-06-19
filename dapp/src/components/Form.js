@@ -7,7 +7,8 @@ import {Storage} from 'aws-amplify';
 
 
 const Form = () => {
-    const [fileData, setFileData] = useState();
+    const [cloudFile, setCloudFile] = useState('');
+    const [fileData, setFileData] = useState('');
     const [fileStatus, setFileStatus] = useState(false);
     const [accountAddress, setAccountAddress] = useState('');
     const [manager, setManager] = useState('');
@@ -22,6 +23,7 @@ const Form = () => {
                     getManager();
                     setPatient(patient);
                     getDevice(patient);
+                    handleFileShow();
                 } 
             });
         }
@@ -55,6 +57,7 @@ const Form = () => {
     }
 
     const connectIoTDevice = async (event, params) => {
+        event.preventDefault();
         const accounts = await web3.eth.getAccounts();
         await monitor.methods.addEquipment(params[0], params[1]).send({
             from: accounts[0]
@@ -79,8 +82,18 @@ const Form = () => {
 
     const uploadFile = async (event) => {
         event.preventDefault();
-        await Storage.put(fileData.name, fileData, {contentType: fileData.type});
+        await Storage.put(cloudFile.name, cloudFile, {contentType: cloudFile.type});
         setFileStatus(true);
+        handleFileShow();
+    }
+
+    const handleFileShow = () => {
+        Storage.get('time.json').then(resp => {
+            fetch(resp)
+                .then(resp => resp.json())
+                .then(out => {setFileData(JSON.stringify(out))
+            });
+        });
     }
     
     return (
@@ -118,13 +131,19 @@ const Form = () => {
                     params = {[deviceAddress, patient]}
                 />
 
+                <p></p>
+                <div>
+                    <label>Patient Data</label>
+                    <textarea className='u-full-width' value={fileData} readOnly></textarea>
+                </div>
+
+                <p></p>
                 <center>
                     <label>Upload file to the Cloud</label>
-                    <input type='file' onChange={(e) => setFileData(e.target.files[0])}/>
+                    <input type='file' onChange={(e) => setCloudFile(e.target.files[0])}/>
                     <button onClick={uploadFile}>Upload File</button>                    
                     <div>{fileStatus ? 'File upload successfully' : ''}</div>
-                </center>
-                
+                </center>                
             </div>
         </form>
     )
