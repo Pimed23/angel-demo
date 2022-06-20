@@ -22,16 +22,17 @@ h1 {
   padding: 1rem;
   border-radius: 1rem;
   margin-top: 2rem;
-  height: 125vh;
+  height: 150vh;
 }
 
 form, .messages {
-  padding: 2rem;
+  padding: 0.5rem;
   max-width: 600px;
   margin: 0 auto;
 }
 .messages {
   text-align: center;
+  border: 1px solid #D1D1D1;
 }
 .resultado {
   border: 2px solid #00b0d7;

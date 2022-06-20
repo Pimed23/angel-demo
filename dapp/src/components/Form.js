@@ -134,26 +134,34 @@ const Form = () => {
     return (
         <form>
             <div className = 'row'>
+                <p></p>
                 <ActionButton
                     title = {!!accountAddress ? 'Disconnect' : 'Connect to Metamask'}
                     action = {!!accountAddress ? disconnectMetamask : connectMetamask}
                 />
-
+                
+                <p></p>
                 <DataLabel
                     title = 'Medic center ID'
                     data = {!!manager ? manager : '---'}
                 />
+
+                <p></p>
                 <DataLabel
                     title = 'Patient ID'
                     data = {!!patient ? patient : '---'}
                 />
 
+                <p></p>
                 <DataLabel
                     title = 'IoT Device ID'
                     data = {!!device ? device : '---'}
                 />
 
+                <p></p>
                 <label>Link IoT Device</label>
+                <center>With this you can change the monitoring device</center>
+                <p></p>
                 <input 
                     className='messages u-full-width' type = 'text' 
                     placeholder='Enter IoT address' value={deviceAddress}
@@ -169,6 +177,8 @@ const Form = () => {
                 <p></p>
                 <div>
                     <label>Patient Data</label>
+                    <center>This information comes from the cloud and it's send to the blockchain by the button</center>
+                    <p></p>
                     <textarea className='u-full-width' value={fileData} readOnly></textarea>
                 </div>
 
@@ -181,6 +191,8 @@ const Form = () => {
                 <p></p>
                 <center>
                     <label>Upload file to the Cloud</label>
+                    <center>Permits set the information of cloud manually</center>
+                    <p></p>
                     <input type='file' onChange={(e) => setCloudFile(e.target.files[0])}/>
                     <button onClick={uploadFile}>Upload File</button>                    
                     <div>{fileStatus ? 'File upload successfully' : ''}</div>
