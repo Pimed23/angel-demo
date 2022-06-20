@@ -15,6 +15,7 @@ const Form = () => {
     const [patient, setPatient] = useState('');
     const [device, setDevice] = useState('');
     const [deviceAddress, setDeviceAddress] = useState('');
+    const [patientValid, setPatientValid] = useState(false);
 
     useEffect(() => {
         const checkingCredentials = async () => {
@@ -23,7 +24,7 @@ const Form = () => {
                     getManager();
                     setPatient(patient);
                     getDevice(patient);
-                    handleFileShow();
+                    setPatientValid(true);
                 } 
             });
         }
@@ -97,11 +98,28 @@ const Form = () => {
         });
     }
 
+    /////////////////////////////////////////////////////////////////////////////////
+    // SIMULATING IOT DEVICE
+
     useEffect(() => {
-        setInterval(async () => {
-            handleFileShow();
-        }, 1000);
-    }, []);
+        const updateCloudData = () => {
+            try {
+                let timestamp = new Date().getTime();
+                let data = `[{ "timestamp": "${timestamp}"}]` 
+                Storage.put('time.json', data); 
+                handleFileShow();
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        
+        const id = setInterval(() => {
+            if(patientValid === true)
+                updateCloudData(); 
+        }, 2000);
+    
+        return () => clearInterval(id);
+    }, [fileData, patientValid]);
 
     return (
         <form>
