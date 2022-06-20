@@ -191,7 +191,7 @@ const Form = () => {
                 <p></p>
                 <center>
                     <label>Upload file to the Cloud</label>
-                    <center>Permits set the information of cloud manually</center>
+                    <center>Allow to set the information of cloud manually</center>
                     <p></p>
                     <input type='file' onChange={(e) => setCloudFile(e.target.files[0])}/>
                     <button onClick={uploadFile}>Upload File</button>                    
