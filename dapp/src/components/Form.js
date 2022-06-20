@@ -5,7 +5,6 @@ import monitor from '../monitor.js';
 import web3 from '../web3.js';
 import {Storage} from 'aws-amplify';
 
-
 const Form = () => {
     const [cloudFile, setCloudFile] = useState('');
     const [fileData, setFileData] = useState('');
@@ -25,6 +24,7 @@ const Form = () => {
                     setPatient(patient);
                     getDevice(patient);
                     setPatientValid(true);
+                    handleFileShow();
                 } 
             });
         }
@@ -81,12 +81,21 @@ const Form = () => {
         window.ethereum.on('disconnect', setAccountAddress('0x0'));
     }
 
+    const storeInBlockchain = async (event) => {
+        event.preventDefault();
+        const start = new Date().getTime();
+        const end = start + 10000;
+        const is_normal = true;
+        await monitor.methods.createMeasure(start, end, patient, device, is_normal).send({
+            from: accountAddress
+        });
+    }
+
     const uploadFile = async (event) => {
         event.preventDefault();
         console.log(cloudFile.name);
         await Storage.put(cloudFile.name, cloudFile, {contentType: cloudFile.type});
         setFileStatus(true);
-        handleFileShow();
     }
 
     const handleFileShow = () => {
@@ -97,7 +106,7 @@ const Form = () => {
             });
         });
     }
-
+                
     /////////////////////////////////////////////////////////////////////////////////
     // SIMULATING IOT DEVICE
 
@@ -105,18 +114,19 @@ const Form = () => {
         const updateCloudData = () => {
             try {
                 let timestamp = new Date().getTime();
-                let data = `[{ "timestamp": "${timestamp}"}]` 
+                let temp = fileData.substring(1, fileData.length - 1);
+                let data = `[${temp},{ "timestamp": "${timestamp}"}]`
                 Storage.put('time.json', data); 
                 handleFileShow();
             } catch (error) {
                 console.log(error);
             }
         };
-        
+
         const id = setInterval(() => {
             if(patientValid === true)
                 updateCloudData(); 
-        }, 2000);
+        }, 3000);
     
         return () => clearInterval(id);
     }, [fileData, patientValid]);
@@ -126,7 +136,7 @@ const Form = () => {
             <div className = 'row'>
                 <ActionButton
                     title = {!!accountAddress ? 'Disconnect' : 'Connect to Metamask'}
-                    action = {!!accountAddress ?    disconnectMetamask : connectMetamask}
+                    action = {!!accountAddress ? disconnectMetamask : connectMetamask}
                 />
 
                 <DataLabel
@@ -161,6 +171,12 @@ const Form = () => {
                     <label>Patient Data</label>
                     <textarea className='u-full-width' value={fileData} readOnly></textarea>
                 </div>
+
+                <ActionButton
+                    title = 'Store in Blockchain'
+                    action = {storeInBlockchain}
+                    params = {[]}
+                />
 
                 <p></p>
                 <center>
