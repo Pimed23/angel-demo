@@ -124,12 +124,12 @@ const Form = () => {
         };
 
         const id = setInterval(() => {
-            if(patientValid === true)
+            if(patientValid === true && device !== '0x0000000000000000000000000000000000000000')
                 updateCloudData(); 
         }, 3000);
     
         return () => clearInterval(id);
-    }, [fileData, patientValid]);
+    }, [fileData, patientValid, device]);
 
     return (
         <form>
@@ -155,7 +155,7 @@ const Form = () => {
                 <p></p>
                 <DataLabel
                     title = 'IoT Device ID'
-                    data = {!!device ? device : '---'}
+                    data = {(!!device && device !== '0x0000000000000000000000000000000000000000') ? device : '---'}
                 />
 
                 <p></p>

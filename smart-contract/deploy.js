@@ -3,8 +3,8 @@ const Web3 = require('web3');
 const { interface, bytecode } = require('./compile');
 
 const provider = new HDWalletProvider(
-  'sausage excuse night fiber lend blur gallery album blame swear citizen bean',
-  'https://rinkeby.infura.io/v3/20c86e30eea04516bcef32eeaf052211'
+  'parade image lesson fashion pluck lawsuit glimpse match example make consider exile',
+  'https://goerli.infura.io/v3/f7892b878615473786e8a3230f34e80d'
 );
 const web3 = new Web3(provider);
 
